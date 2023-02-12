@@ -86,6 +86,7 @@ const View = ({ char }) => {
   ) {
     imgStyle = { objectFit: 'contain' };
   }
+  
   return (
     <div className="randomchar__block">
       <img
