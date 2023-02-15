@@ -85,12 +85,19 @@ class CharList extends Component {
 
       return (
         <li
+          tabIndex={0}
           className="char__item"
           ref={this.setRef}
           key={item.id}
           onClick={() => {
             this.props.onCharSelected(item.id);
             this.focusOnItem(i);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === ' ' || e.key === 'Enter') {
+              this.props.onCharSelected(item.id);
+              this.focusOnItem(i);
+            }
           }}
         >
           <img src={item.thumbnail} alt={item.name} style={imgStyle} />
