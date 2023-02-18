@@ -19,7 +19,7 @@ const CharList = (props) => {
 
   useEffect(() => {
     onRequest();
-  }, [])
+  }, []);
 
   // componentDidMount() {
   //   this.onRequest();
@@ -60,16 +60,16 @@ const CharList = (props) => {
       ended = true;
     }
 
-    setCharList(charList => [...charList, ...newCharList])
-    setLoading(loading => false);
-    setNewItemLoading(newItemLoading => false);
-    setOffset(offset => offset + 9);
-    setCharEnded(charEnded => ended);
+    setCharList((charList) => [...charList, ...newCharList]);
+    setLoading((loading) => false);
+    setNewItemLoading((newItemLoading) => false);
+    setOffset((offset) => offset + 9);
+    setCharEnded((charEnded) => ended);
   };
 
   const onError = () => {
     setError(true);
-    setLoading(loading => false);
+    setLoading((loading) => false);
   };
 
   const itemRefs = useRef([]);
@@ -96,7 +96,7 @@ const CharList = (props) => {
         <li
           tabIndex={0}
           className="char__item"
-          ref={el => itemRefs.current[i] = el}
+          ref={(el) => (itemRefs.current[i] = el)}
           key={item.id}
           onClick={() => {
             props.onCharSelected(item.id);
@@ -117,28 +117,28 @@ const CharList = (props) => {
     return <ul className="char__grid">{items}</ul>;
   }
 
-    const items = renderItems(charList);
+  const items = renderItems(charList);
 
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error) ? items : null;
+  const errorMessage = error ? <ErrorMessage /> : null;
+  const spinner = loading ? <Spinner /> : null;
+  const content = !(loading || error) ? items : null;
 
-    return (
-      <div className="char__list">
-        {errorMessage}
-        {spinner}
-        {content}
-        <button
-          onClick={() => onRequest(offset)}
-          disabled={newItemLoading}
-          style={{ display: charEnded ? 'none' : 'block' }}
-          className="button button__main button__long"
-        >
-          <div className="inner">load more</div>
-        </button>
-      </div>
-    );
-}
+  return (
+    <div className="char__list">
+      {errorMessage}
+      {spinner}
+      {content}
+      <button
+        onClick={() => onRequest(offset)}
+        disabled={newItemLoading}
+        style={{ display: charEnded ? 'none' : 'block' }}
+        className="button button__main button__long"
+      >
+        <div className="inner">load more</div>
+      </button>
+    </div>
+  );
+};
 
 CharList.propTypes = {
   onCharSelected: PropTypes.func.isRequired,
