@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import useMarvelService from '../../services/MarvelService';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -78,28 +79,31 @@ const CharList = (props) => {
       }
 
       return (
-        <li
-          tabIndex={0}
-          className="char__item"
-          ref={(el) => (itemRefs.current[i] = el)}
-          key={item.id}
-          onClick={() => {
-            props.onCharSelected(item.id);
-            focusOnItem(i);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === ' ' || e.key === 'Enter') {
+        <CSSTransition key={item.id} timeout={500} classNames="char__item">
+          <li
+            tabIndex={0}
+            className="char__item"
+            ref={(el) => (itemRefs.current[i] = el)}
+            key={item.id}
+            onClick={() => {
               props.onCharSelected(item.id);
               focusOnItem(i);
-            }
-          }}
-        >
-          <img src={item.thumbnail} alt={item.name} style={imgStyle} />
-          <div className="char__name">{item.name}</div>
-        </li>
+            }}
+            onKeyDown={(e) => {
+              if (e.key === ' ' || e.key === 'Enter') {
+                props.onCharSelected(item.id);
+                focusOnItem(i);
+              }
+            }}
+          >
+            <img src={item.thumbnail} alt={item.name} style={imgStyle} />
+            <div className="char__name">{item.name}</div>
+          </li>
+        </CSSTransition>
       );
     });
-    return <ul className="char__grid">{items}</ul>;
+
+    return <TransitionGroup className="char__grid">{items}</TransitionGroup>;
   }
 
   const items = renderItems(charList);
