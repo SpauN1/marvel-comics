@@ -30,7 +30,18 @@
       text-transform: uppercase;
     }
     &:hover {
-      transform: translateY(-5px);
+      transform: translateY(-7px);
+    }
+    &-enter {
+      transform: scale(0);
+    }
+    &-enter-active {
+      transform: scale(0);
+      transition: all 500ms;
+    }
+    &-enter-done {
+      transform: scale(1);
+      transition: all 500ms;
     }
   }
 }
