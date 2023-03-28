@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import useMarvelService from '../../services/MarvelService';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import Skeleton from '../Skeleton/Skeleton';
-import Spinner from '../Spinner/Spinner';
+import setContent from '../../utils/setContent';
 
 import './CharInfo.scss';
 
@@ -16,6 +14,7 @@ const CharInfo = (props) => {
 
   useEffect(() => {
     updateChar();
+    // eslint-disable-next-line
   }, [props.charId]);
 
   const updateChar = () => {
@@ -34,30 +33,11 @@ const CharInfo = (props) => {
     setChar(char);
   };
 
-  const setContent = (process, char) => {
-    switch (process) {
-      case 'waiting':
-        return <Skeleton />;
-
-      case 'loading':
-        return <Spinner />;
-
-      case 'confirmed':
-        return <View char={char} />;
-
-      case 'error':
-        return <ErrorMessage />;
-
-      default:
-        throw new Error('Unexpected process state');
-    }
-  };
-
-  return <div className="char__info">{setContent(process, char)}</div>;
+  return <div className="char__info">{setContent(process, View, char)}</div>;
 };
 
-const View = ({ char }) => {
-  const { name, description, thumbnail, homepage, wiki, comics } = char;
+const View = ({ data }) => {
+  const { name, description, thumbnail, homepage, wiki, comics } = data;
 
   let imgStyle = { objectFit: 'cover' };
   if (
