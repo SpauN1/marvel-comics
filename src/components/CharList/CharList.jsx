@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import useMarvelService from '../../services/MarvelService';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -30,7 +29,7 @@ const setContent = (process, Component, newItemLoading) => {
 const CharList = (props) => {
   const [charList, setCharList] = useState([]);
   const [newItemLoading, setNewItemLoading] = useState(false);
-  const [offset, setOffset] = useState(286);
+  const [offset, setOffset] = useState(302);
   const [charEnded, setCharEnded] = useState(false);
 
   const { process, setProcess, getAllCharacters } = useMarvelService();
@@ -39,27 +38,6 @@ const CharList = (props) => {
     onRequest(offset, true);
     // eslint-disable-next-line
   }, []);
-
-  // componentDidMount() {
-  //   this.onRequest();
-  //   window.addEventListener('scroll', this.onLoadByScroll);
-  // }
-  // componentWillUnmount() {
-  //   window.removeEventListener('scroll', this.onLoadByScroll);
-  // }
-
-  // onLoadByScroll = () => {
-  //   let scrollHeight = Math.max(
-  //     (document.documentElement.scrollHeight, document.body.scrollHeight)
-  //   );
-
-  //   if (
-  //     Math.floor(window.scrollY + document.documentElement.clientHeight) >=
-  //     scrollHeight
-  //   ) {
-  //     this.onRequest(this.state.offset);
-  //   }
-  // };
 
   const onRequest = (offset, initial) => {
     initial ? setNewItemLoading(false) : setNewItemLoading(true);
@@ -101,35 +79,29 @@ const CharList = (props) => {
       }
 
       return (
-        <CSSTransition key={item.id} timeout={500} classNames="char__item">
-          <li
-            tabIndex={0}
-            className="char__item"
-            ref={(el) => (itemRefs.current[i] = el)}
-            key={item.id}
-            onClick={() => {
+        <li
+          tabIndex={0}
+          className="char__item"
+          ref={(el) => (itemRefs.current[i] = el)}
+          key={item.id}
+          onClick={() => {
+            props.onCharSelected(item.id);
+            focusOnItem(i);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === ' ' || e.key === 'Enter') {
               props.onCharSelected(item.id);
               focusOnItem(i);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === ' ' || e.key === 'Enter') {
-                props.onCharSelected(item.id);
-                focusOnItem(i);
-              }
-            }}
-          >
-            <img src={item.thumbnail} alt={item.name} style={imgStyle} />
-            <div className="char__name">{item.name}</div>
-          </li>
-        </CSSTransition>
+            }
+          }}
+        >
+          <img src={item.thumbnail} alt={item.name} style={imgStyle} />
+          <div className="char__name">{item.name}</div>
+        </li>
       );
     });
 
-    return (
-      <ul className="char__grid">
-        <TransitionGroup className="char__grid">{items}</TransitionGroup>
-      </ul>
-    );
+    return <ul className="char__grid">{items}</ul>;
   }
 
   const elements = useMemo(() => {
