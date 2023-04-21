@@ -80,3 +80,12 @@ main {
     opacity: 1;
   }
 }
+
+@keyframes charList {
+  100% {
+    transform: translateX(0px) rotate(0deg);
+  }
+  0% {
+    transform: translateX(-750px) rotate(90deg);
+  }
+}
