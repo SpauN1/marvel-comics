@@ -89,3 +89,12 @@ main {
     transform: translateX(-750px) rotate(90deg);
   }
 }
+
+@keyframes comicsList {
+  100% {
+    transform: scale(1);
+  }
+  0% {
+    transform: scale(0);
+  }
+}
