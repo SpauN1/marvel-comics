@@ -42,7 +42,7 @@ const useHttp = () => {
     setProcess('loading');
   }, []);
 
-  return {loading, error, process, setProcess, request, clearError };
+  return { loading, error, process, setProcess, request, clearError };
 };
 
 export default useHttp;
