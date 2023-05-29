@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useInView } from 'react-intersection-observer';
 
 import useMarvelService from '../../services/MarvelService';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -15,10 +16,17 @@ const CharList = (props) => {
 
   const { loading, error, getAllCharacters } = useMarvelService();
 
+  const { ref, inView } = useInView({
+    threshold: 1,
+    rootMargin: '0px 0px -70px 0px',
+  });
+
   useEffect(() => {
-    onRequest(offset, true);
-    // eslint-disable-next-line
-  }, []);
+    if (inView) {
+      onRequest(offset);
+    }
+    //eslint-disable-next-line
+  }, [inView]);
 
   const onRequest = (offset, initial) => {
     initial ? setNewItemLoading(false) : setNewItemLoading(true);
@@ -94,6 +102,7 @@ const CharList = (props) => {
       {spinner}
       {items}
       <button
+        ref={ref}
         onClick={() => onRequest(offset)}
         disabled={newItemLoading}
         style={{ display: charEnded ? 'none' : 'block' }}

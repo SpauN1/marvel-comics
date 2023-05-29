@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
 
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../Spinner/Spinner';
@@ -15,10 +16,17 @@ const ComicsList = () => {
 
   const { loading, error, getAllComics } = useMarvelService();
 
+  const { ref, inView } = useInView({
+    threshold: 1,
+    rootMargin: '0px 0px -50px 0px',
+  });
+
   useEffect(() => {
-    onRequest(offset, true);
-    // eslint-disable-next-line
-  }, []);
+    if (inView) {
+      onRequest(offset);
+    }
+    //eslint-disable-next-line
+  }, [inView]);
 
   const onRequest = (offset, initial) => {
     initial ? setNewItemLoading(false) : setNewItemLoading(true);
@@ -67,6 +75,7 @@ const ComicsList = () => {
       {spinner}
       {items}
       <button
+        ref={ref}
         disabled={newItemLoading}
         style={{ display: comicsEnded ? 'none' : 'block' }}
         className="button button__main button__long"
